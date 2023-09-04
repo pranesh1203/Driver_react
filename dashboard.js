@@ -1,15 +1,21 @@
-import React from 'react';
-import {StyleSheet, Text, View,SafeAreaView,StatusBar,Dimensions, TouchableOpacity} from 'react-native';
+import React,{useState,useEffect} from 'react';
+import {StyleSheet, Text, View,SafeAreaView,StatusBar,Dimensions, TouchableOpacity,PermissionsAndroid} from 'react-native';
 import axios from 'axios';
+import loc_update from './loc-fire';
 const h=Dimensions.get('window').height;
 const w=Dimensions.get('window').width;
+import auth from '@react-native-firebase/auth'
+import database from '@react-native-firebase/database'
+import Geolocation from 'react-native-geolocation-service';
+
 
 export default function Dash({setauthenticated}){
+  loc_update()
     return(
         <SafeAreaView style={styles.main}>
         <View style={styles.head}>
           <Text style={styles.title}>College Bus Tracker</Text>
-          <TouchableOpacity onPress={() => {setauthenticated(false); console.log('signed out')}} style={styles.signOutButton}>
+          <TouchableOpacity onPress={() => {auth().signOut().then(() => console.log('User signed out!'));setauthenticated(false)}} style={styles.signOutButton}>
                 <Text style={styles.signOutButtonText}>Sign Out</Text>
             </TouchableOpacity>
         </View>

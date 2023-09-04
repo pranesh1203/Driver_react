@@ -126,14 +126,15 @@ export default function Login({setauthenticated}) {
       </View>
       <View style={style.login}>
         <View style={style.loginBox}>
-          <Text style={{ paddingTop: 20, paddingBottom: 5, fontFamily: "Nexa-Heavy", fontSize: 20 }}>LOGIN</Text>
-          <Text>Enter your Mail and Password</Text>
+          <Text style={{ paddingTop: 20, paddingBottom: 5, fontFamily: "Nexa-Heavy", fontSize: 20,color:"black" }}>LOGIN</Text>
+          <Text style={{color:"black"}}>Enter your Mail and Password</Text>
           <View style={style.inputbox}>
-            <Text style={{ paddingTop: 15, paddingBottom: 5, textAlign: 'left', fontSize: 16 }}>E-Mail</Text>
+            <Text style={{ paddingTop: 15, paddingBottom: 5, textAlign: 'left', fontSize: 16 ,color:"black"}}>E-Mail</Text>
             <TextInput
               style={{
                 backgroundColor: "white",
                 borderRadius: 5,
+                color:"black",
               }}
               placeholder="Enter your email"
               autoCapitalize="none"
@@ -143,11 +144,12 @@ export default function Login({setauthenticated}) {
             />
             {emailError && <Text style={{ color: 'red' }}>{emailError}</Text>}
 
-            <Text style={{ paddingTop: 15, paddingBottom: 5, textAlign: 'left', fontSize: 16 }}>Password</Text>
+            <Text style={{ paddingTop: 15, paddingBottom: 5, textAlign: 'left', fontSize: 16 ,color:"black"}}>Password</Text>
             <TextInput
               style={{
                 backgroundColor: "white",
                 borderRadius: 5,
+                color:"black"
               }}
               placeholder="Enter your password"
               autoCapitalize="none"
