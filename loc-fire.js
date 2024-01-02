@@ -3,6 +3,7 @@ import { PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import auth from '@react-native-firebase/auth'
 import database from '@react-native-firebase/database'
+import axios from 'axios';
 
 const requestLocationPermission = async () => {
   try {
@@ -43,7 +44,7 @@ const fetchLocation = async (setLocation) => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       fetchLocation(setLocation);
-    }, 5000); 
+    }, 8000); 
     return () => {
       clearInterval(intervalId);
     };
@@ -53,9 +54,10 @@ const fetchLocation = async (setLocation) => {
       const reff = database();
       const drv = reff.ref('Driver');
       const samp = drv.child('2a');
-      samp.update({loc:`${location.coords.latitude},${location.coords.longitude}`})
-      console.log(auth().currentUser)
+      console.log(location.coords.latitude,location.coords.longitude)
+      samp.update({"loc":`${location.coords.latitude},${location.coords.longitude}`})
       console.log(1)
+      axios.get('https://update-eta-beige.vercel.app/2a')
     }
   }, [location]);
  }

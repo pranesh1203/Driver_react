@@ -1,16 +1,34 @@
 import React,{useState,useEffect} from 'react';
 import {StyleSheet, Text, View,SafeAreaView,StatusBar,Dimensions, TouchableOpacity,PermissionsAndroid} from 'react-native';
-import axios from 'axios';
 import loc_update from './loc-fire';
-const h=Dimensions.get('window').height;
-const w=Dimensions.get('window').width;
 import auth from '@react-native-firebase/auth'
 import database from '@react-native-firebase/database'
-import Geolocation from 'react-native-geolocation-service';
-
+const h=Dimensions.get('window').height;
+const w=Dimensions.get('window').width;
 
 export default function Dash({setauthenticated}){
-  loc_update()
+  const [start,setstart]=useState(false)
+  const [eta,seteta]=useState();
+  loc_update();
+  useEffect(()=>
+  {
+    if(!start){seteta('--')}
+    else{
+      
+      const reff = database();
+  const drv = reff.ref('Route');
+  const samp = drv.child('2a');
+  samp.on('value', snapshot => {
+    const js=snapshot.val();
+   seteta(Math.ceil(js[16].eta/60))
+    console.log(eta)
+  });
+    }
+  },
+  [start])
+  
+
+  console.log(2)
     return(
         <SafeAreaView style={styles.main}>
         <View style={styles.head}>
@@ -27,16 +45,24 @@ export default function Dash({setauthenticated}){
                </Text>
              </View>
              <View style={{width:'45%',alignItems: 'center' }}>
-               <Text style={styles.statusTag}>Yes</Text>
+               <Text style={styles.statusTag}>On Time</Text>
              </View>
            </View>
            <View style={styles.circlebox}>
              <View style={styles.circle}>
- 
+                <View style={styles.sqeta}>
+                  <Text style={styles.sqetatxt}>{eta}</Text>
+                  <Text style={{color:"white",fontSize:16}}>Minutes</Text>
+                </View>
              </View>
            </View>
          </View>
-  
+         <View style={{flex:0.62,justifyContent:'flex-end',alignItems:"center",}}>
+          <TouchableOpacity style={styles.stsp} onPress={()=>start?setstart(false):setstart(true)}>
+            <Text style={{color: "white",
+        fontSize: 16,}}>{start?'Stop':'Start'}</Text>
+          </TouchableOpacity>
+         </View>
      </SafeAreaView>
     );
 }
@@ -44,7 +70,7 @@ const styles=StyleSheet.create({
     main:{
       backgroundColor: "#ffffff",
       flexDirection:'column',
-      flex:1
+      flex:1,
     },
     head: {
         flex: 0.07,
@@ -102,12 +128,36 @@ const styles=StyleSheet.create({
       alignItems:"center",
       justifyContent:"center",
       display:"flex",
-     
+    
     },
    circle:{
     width: w * 0.4, // Set the width based on the screen width
     aspectRatio: 1, // Maintain aspect ratio
     borderRadius: w * 0.25, // Set the border radius based on the screen width
     backgroundColor: 'black',
+    alignItems:"center",
+    justifyContent:"center",
     },
+    sqeta:{
+      width:'70%',
+      height:'70%',
+      backgroundColor:"black",
+      alignItems:"center",
+    justifyContent:"center",
+    display:"flex",
+    },
+    sqetatxt: {
+      fontFamily: "Nexa-Heavy",
+      fontSize: 60,
+      color: "white",
+      padding:10,
+    },
+    stsp:{
+      backgroundColor: "black", // Change to your desired color
+      borderRadius: 5,
+      padding: 15,
+      marginLeft: 10, 
+      width:'30%',
+      alignItems:"center"
+    }
   })
